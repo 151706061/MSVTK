@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>qMSECGMainWindow</class>
- <widget class="QMainWindow" name="ECGMainWindow">
+ <widget class="QMainWindow" name="qMSECGMainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -31,7 +31,7 @@
        </widget>
       </item>
       <item>
-       <widget class="ctkSliderWidget" name="currentFrameSlider"/>
+       <widget class="ctkSliderWidget" name="currentFrameSlider" native="true"/>
       </item>
      </layout>
     </item>
@@ -43,14 +43,15 @@
      <x>0</x>
      <y>0</y>
      <width>421</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpen"/>
+    <addaction name="actionOpenCartoData"/>
+    <addaction name="actionClose"/>
     <addaction name="actionExit"/>
    </widget>
    <addaction name="menuFile"/>
@@ -84,8 +85,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>80</width>
-          <height>304</height>
+          <width>79</width>
+          <height>295</height>
          </rect>
         </property>
        </widget>
@@ -115,14 +116,28 @@
     </layout>
    </widget>
   </widget>
-  <action name="actionOpen">
+  <action name="actionOpenCartoData">
    <property name="text">
     <string>Open...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
    </property>
   </action>
  </widget>

@@ -26,19 +26,33 @@
 
 // ECG includes
 #include "vtkMSECGExport.h"
+
+class qMSECGApplication;
 class qMSECGMainWindowPrivate;
 
 class MSVTK_ECG_EXPORT qMSECGMainWindow : public QMainWindow
 {
   Q_OBJECT
 public:
-
   typedef QMainWindow Superclass;
   qMSECGMainWindow(QWidget *parent=0);
   virtual ~qMSECGMainWindow();
 
+  void SetApplication(qMSECGApplication* app);
+  qMSECGApplication* GetApplication() const {return application;}
+
+public slots:
+  void openCartoData();
+  void closeScene();
+  void updateThreeDViewData(double frame = 0);
+  void playCartoData();
+  void playStep();
+
 protected:
+  void setupMenuActions();
+
   QScopedPointer<qMSECGMainWindowPrivate> d_ptr;
+  qMSECGApplication* application;
 
 private:
   Q_DECLARE_PRIVATE(qMSECGMainWindow);

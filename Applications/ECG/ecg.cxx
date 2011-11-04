@@ -23,14 +23,16 @@
 
 // msvtkECG includes
 #include "qMSECGMainWindow.h"
+#include "qMSECGApplication.h"
 
 //----------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
   QCoreApplication::setApplicationName("MSVTK ECG");
-  QApplication app(argc, argv);
+  qMSECGApplication app(argc, argv);
 
   qMSECGMainWindow mainWindow;
+  mainWindow.SetApplication(app.application());
   mainWindow.show();
 
   // Look at QApplication::exec() documentation, it is recommended to connect

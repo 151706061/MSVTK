@@ -7,10 +7,14 @@ project(msvtk${KIT})
 
 set(msvtk${KIT}_SRCS
   qMSECGMainWindow.cxx
+  qMSECGApplication.cxx
+  vtkMSECGReader.cxx
   )
 
 set(msvtk${KIT}_MOC_SRCS
   qMSECGMainWindow.h
+  qMSECGApplication.h
+  vtkMSECGReader.h
   )
 
 set(msvtk${KIT}_UI_SRCS
