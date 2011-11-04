@@ -26,6 +26,7 @@
 
 // MSECGQT includes
 #include "qMSECGApplication.h"
+#include "vtkMSECGButtonsManager.h"
 #include "vtkMSECGReader.h"
 
 
@@ -35,7 +36,8 @@
 //-----------------------------------------------------------------------------
 qMSECGApplication::qMSECGApplication(int &_argc, char **_argv) :
   Superclass(_argc, _argv),
-  reader(new vtkMSECGReader),
+  reader(vtkMSECGReader::New()),
+  buttonsManager(new vtkMSECGButtonsManager),
   cartoPeriod(2500) // ChangeConstDef
 {}
 
@@ -51,6 +53,8 @@ void qMSECGApplication::ReadCartoData(const QString& dirPath)
 {
   this->ReadCartoPoints(dirPath);
   //this->ReadCartoECG(dirPath);
+
+  this->buttonsManager->Init(this->reader->GetCartoPointsReaders().at(0));
 }
 
 //-----------------------------------------------------------------------------
@@ -85,4 +89,5 @@ void qMSECGApplication::ReadCartoPoints(const QString& dirPath)
 void qMSECGApplication::Clear()
 {
   this->reader->Clear();
+  this->buttonsManager->Clear();
 }

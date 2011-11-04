@@ -22,6 +22,8 @@
 #include "QFileDialog"
 #include "QTimer"
 
+// MSECG includes
+#include "vtkMSECGButtonsManager.h"
 
 // MSVTK includes
 #include "qMSECGMainWindow.h"
@@ -194,6 +196,7 @@ void qMSECGMainWindow::SetApplication(qMSECGApplication* app)
     }
 
   application = app;
+  this->GetApplication()->GetButtonsManager()->SetRenderer(d->threeDRenderer);
 }
 
 //-----------------------------------------------------------------------------
@@ -246,6 +249,9 @@ void qMSECGMainWindow::updateThreeDViewData(double frame)
 
   vtkActor* actor = d->cartoPointsActors.at(curFrame).GetPointer();
   actor->VisibilityOn();
+
+  this->application->GetButtonsManager()->UpdateButtonWidgets(
+    this->GetApplication()->GetReader()->GetCartoPointsReaders().at(curFrame));
 
   d->threeDView->GetRenderWindow()->Render();
   d->lastFrame = curFrame;

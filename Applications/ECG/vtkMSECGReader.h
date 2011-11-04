@@ -34,12 +34,11 @@
 class  vtkMSECGReader : public vtkPolyDataReader
 {
 public:
-  vtkMSECGReader();
-  ~vtkMSECGReader();
-  void PrintSelf(ostream& os, vtkIndent indent){Superclass::PrintSelf(os,indent);}
+  static vtkMSECGReader* New();
+  void PrintSelf(ostream& os, vtkIndent indent);
 
   // Description:
-  // Specify file name.
+  // Specify path name.
   void SetPathName(const std::string& pName){PathName = pName;}
   const std::string& GetPathName() const {return PathName;}
 
@@ -69,6 +68,9 @@ public:
   virtual void Clear();
 
 protected:
+  vtkMSECGReader();
+  virtual ~vtkMSECGReader();
+
   void ClearCartoPoints();
 
   std::string PathName;             // Current directory

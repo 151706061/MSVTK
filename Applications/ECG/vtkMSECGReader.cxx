@@ -21,12 +21,16 @@
 
 // VTK includes
 #include <vtkNew.h>
+#include <vtkObjectFactory.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkStructuredPointsReader.h>
 
 // MSVTK includes
 #include "vtkMSECGReader.h"
+
+//---------------------------------------------------------------------------
+vtkStandardNewMacro(vtkMSECGReader);
 
 //-----------------------------------------------------------------------------
 vtkMSECGReader::vtkMSECGReader() : PathName(""),
@@ -81,4 +85,10 @@ void vtkMSECGReader::ClearCartoPoints()
 {
   this->CartoPoints.clear();
   this->CartoPointsReaders.clear();
+  this->NumberOfCartoPoints = 0;
+}
+
+void vtkMSECGReader::PrintSelf(ostream& os, vtkIndent indent)
+{
+  Superclass::PrintSelf(os,indent);
 }

@@ -27,6 +27,7 @@
 
 class QString;
 class QMainWindow;
+class vtkMSECGButtonsManager;
 class vtkMSECGReader;
 
 class qMSECGApplication : public QApplication
@@ -52,6 +53,9 @@ public:
   /// Return a pointer on the application reader
   vtkMSECGReader* GetReader() const {return reader;}
 
+  /// Return a pointer on the application button manager
+  vtkMSECGButtonsManager* GetButtonsManager() const {return buttonsManager;}
+
   /// Return the period of the current CartoData
   size_t GetCartoPeriod() const {return cartoPeriod;}
 
@@ -59,6 +63,7 @@ private:
   void ReadCartoPoints(const QString&);
 
   vtkMSECGReader*         reader;
+  vtkMSECGButtonsManager* buttonsManager;
   size_t                  cartoPeriod;
 };
 #endif
