@@ -24,13 +24,14 @@
 
 // Qt includes
 #include <QApplication>
-
-class QString;
 class QMainWindow;
+
+// ECG includes
+#include "vtkMSECGExport.h"
 class vtkMSECGButtonsManager;
 class vtkMSECGReader;
 
-class qMSECGApplication : public QApplication
+class MSVTK_ECG_EXPORT qMSECGApplication : public QApplication
 {
   Q_OBJECT
 public:
@@ -61,6 +62,7 @@ public:
 
 private:
   void ReadCartoPoints(const QString&);
+  void ReadCartoECG(const QString&);
 
   vtkMSECGReader*         reader;
   vtkMSECGButtonsManager* buttonsManager;

@@ -19,15 +19,21 @@
   This file was originally developed by Michael Jeulin-Lagarrigue, Kitware Inc.
 ==============================================================================*/
 
+
+// MSVTK includes
+#include "vtkMSECGReader.h"
+
 // VTK includes
+#include <vtkFloatArray.h>
 #include <vtkNew.h>
 #include <vtkObjectFactory.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkStructuredPointsReader.h>
+#include <vtkTable.h>
 
-// MSVTK includes
-#include "vtkMSECGReader.h"
+// STD includes
+#include <cstdlib>
 
 //---------------------------------------------------------------------------
 vtkStandardNewMacro(vtkMSECGReader);
@@ -72,6 +78,44 @@ void vtkMSECGReader::ReadCartoPoints(std::list<std::string>& filePaths)
 
   this->NumberOfCartoPoints = this->CartoPoints.size();
   std::cout << "Number of pointfiles: " << this->NumberOfCartoPoints << std::endl;
+}
+
+//-----------------------------------------------------------------------------
+vtkMSECGReader::SmartECGs vtkMSECGReader::GetCartoSignals()
+{
+  vtkMSECGReader::SmartECGs signals;
+  const vtkIdType signalCount = 5;
+  for (vtkIdType i; i < signalCount; ++i)
+    {
+    signals.push_back(this->GetCartoSignal(i));
+    }
+  return signals;
+}
+
+//-----------------------------------------------------------------------------
+vtkSmartPointer<vtkTable> vtkMSECGReader::GetCartoSignal(vtkIdType vtkNotUsed(index))
+{
+  vtkSmartPointer<vtkTable> signal = vtkSmartPointer<vtkTable>::New();
+  vtkNew<vtkFloatArray> time;
+  time->SetName("Time");
+  signal->AddColumn(time.GetPointer());
+  vtkNew<vtkFloatArray> values;
+  values->SetName("Values");
+  signal->AddColumn(values.GetPointer());
+
+  // Test charting with a few more points...
+  const int timeSpanInMSecs = 2500;
+  const int timeStepInMSecs = 1;
+  const vtkIdType numPoints = timeSpanInMSecs * timeStepInMSecs;
+  signal->SetNumberOfRows(numPoints);
+  for (vtkIdType i = 0; i < numPoints; ++i)
+    {
+    signal->SetValue(i, 0, i);
+    signal->SetValue(i, 1, rand() - RAND_MAX / 2);
+    }
+  signal->Update();
+
+  return signal;
 }
 
 //-----------------------------------------------------------------------------

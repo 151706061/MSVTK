@@ -62,6 +62,10 @@ public:
   SmartPolyDataMappers GetCartoPoints() const {return CartoPoints;}
   SmartPolyDataReaders GetCartoPointsReaders() const {return CartoPointsReaders;}
 
+  typedef std::vector<vtkSmartPointer<vtkTable> > SmartECGs;
+  SmartECGs GetCartoSignals();
+  vtkSmartPointer<vtkTable> GetCartoSignal(vtkIdType index);
+
   void ReadCartoPoints(std::list<std::string>&);
 
   /// Reset Reader

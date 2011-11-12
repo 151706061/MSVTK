@@ -15,8 +15,6 @@ set(msvtk${KIT}_SRCS
 set(msvtk${KIT}_MOC_SRCS
   qMSECGMainWindow.h
   qMSECGApplication.h
-  vtkMSECGReader.h
-  vtkMSECGButtonsManager.h
   )
 
 set(msvtk${KIT}_UI_SRCS

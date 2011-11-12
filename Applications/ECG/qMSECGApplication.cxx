@@ -52,9 +52,14 @@ qMSECGApplication* qMSECGApplication::application()
 void qMSECGApplication::ReadCartoData(const QString& dirPath)
 {
   this->ReadCartoPoints(dirPath);
-  //this->ReadCartoECG(dirPath);
+  this->ReadCartoECG(dirPath);
 
-  this->buttonsManager->Init(this->reader->GetCartoPointsReaders().at(0));
+  vtkMSECGReader::SmartPolyDataReaders readers =
+    this->reader->GetCartoPointsReaders();
+  if (readers.size())
+    {
+    this->buttonsManager->Init(readers.at(0));
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -83,6 +88,12 @@ void qMSECGApplication::ReadCartoPoints(const QString& dirPath)
     }
 
   this->reader->ReadCartoPoints(filePaths);
+}
+
+//-----------------------------------------------------------------------------
+void qMSECGApplication::ReadCartoECG(const QString& dirPath)
+{
+  Q_UNUSED(dirPath);
 }
 
 //-----------------------------------------------------------------------------

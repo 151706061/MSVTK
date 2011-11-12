@@ -48,6 +48,9 @@ public slots:
   void playCartoData();
   void playStep();
 
+  void setCurrentSignal(int pointId);
+  void setCurrentTime(double time);
+
 protected:
   void setupMenuActions();
 

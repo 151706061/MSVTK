@@ -33,11 +33,15 @@
 
 // VTK includes
 #include "vtkActor.h"
+#include "vtkAxis.h"
+#include "vtkChartXY.h"
 #include "vtkNew.h"
+#include "vtkPlotLine.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
 #include "vtkSmartPointer.h"
+#include "vtkTable.h"
 
 // STD includes
 #include <iostream>
@@ -54,6 +58,9 @@ protected:
 
   int lastFrame;  // Convenient member to avoid going through the list of actors;
   QTimer *timer;  // Timer to process the player
+
+  //vtkSmartPointer<vtkPlotBar>   currentTimePlot;
+  vtkSmartPointer<vtkPlotLine>  signalPlot;
 
 public:
   qMSECGMainWindowPrivate(qMSECGMainWindow& object);
@@ -87,6 +94,17 @@ void qMSECGMainWindowPrivate::setupUi(QMainWindow * mainWindow)
   this->currentFrameSlider->setDecimals(0);
   this->currentFrameSlider->setMaximum(0);
   this->currentFrameSlider->setSingleStep(1);
+
+  // Initialize signal view
+  this->signalPlot = vtkSmartPointer<vtkPlotLine>::New();
+  this->signalPlot->SetWidth(1.);
+  this->signalPlot->SetColor(1., 0., 0.);
+  this->ecgView->chart()->GetAxis(vtkAxis::BOTTOM)->SetTitle("Time (ms)");
+  this->ecgView->chart()->GetAxis(vtkAxis::LEFT)->SetTitle("Voltage (mV)");
+  this->ecgView->addPlot(this->signalPlot);
+
+  //this->currentTimePlot = vtkSmartPointer<vtkPlotBar>::New();
+  //this->ecgView->addPlot(this->currentTimePlot);
 }
 
 //-----------------------------------------------------------------------------
@@ -218,6 +236,8 @@ void qMSECGMainWindow::openCartoData()
   this->application->ReadCartoData(dir);
 
   d->loadThreeDViewData();
+  this->setCurrentSignal(0);
+
   d->updateUi();
   this->updateThreeDViewData(d->lastFrame);
 }
@@ -253,7 +273,7 @@ void qMSECGMainWindow::updateThreeDViewData(double frame)
   this->application->GetButtonsManager()->UpdateButtonWidgets(
     this->GetApplication()->GetReader()->GetCartoPointsReaders().at(curFrame));
 
-  d->threeDView->GetRenderWindow()->Render();
+  d->threeDView->update();
   d->lastFrame = curFrame;
 }
 
@@ -284,4 +304,23 @@ void qMSECGMainWindow::playStep()
     }
 
   d->currentFrameSlider->setValue(d->currentFrameSlider->value()+1);
+}
+
+//-----------------------------------------------------------------------------
+void qMSECGMainWindow::setCurrentSignal(int pointId)
+{
+  Q_D(qMSECGMainWindow);
+  vtkSmartPointer<vtkTable> signal =
+    this->application->GetReader()->GetCartoSignal(pointId);
+  d->signalPlot->SetInput(signal, 0, 1);
+  d->signalPlot->Update();
+
+  d->ecgView->boundAxesToChartBounds();
+}
+
+//-----------------------------------------------------------------------------
+void qMSECGMainWindow::setCurrentTime(double time)
+{
+  Q_D(qMSECGMainWindow);
+  Q_UNUSED(time);
 }
