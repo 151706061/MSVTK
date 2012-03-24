@@ -358,10 +358,13 @@ option(MSVTK_USE_KWSTYLE     "Enable sourcecode-based style tests." OFF)
 # Will contain a list of sub-directory without option ON or OFF
 #
 set(MSVTK_PLUGINS_SUBDIRS )
-set(MSVTK_APPLICATIONS_SUBDIRS )
+set(MSVTK_APPLICATIONS_SUBDIRS
+  ECG
+  HAI
+)
 
-option(MSVTK_APP_ECG "ECG application to demonstrate vtkButtons" ON)
-list(APPEND MSVTK_APPLICATIONS_SUBDIRS ECG)
+option(MSVTK_APP_ECG "ECG application to demonstrate vtkPipeline architecture and vtkButtons" ON)
+option(MSVTK_APP_HAI "HAI application to demonstrate vtkPipeline architecture and composite data set" ON)
 
 #-----------------------------------------------------------------------------
 # Prerequisites

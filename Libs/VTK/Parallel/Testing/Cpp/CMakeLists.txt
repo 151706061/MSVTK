@@ -3,6 +3,8 @@ set(KIT VTKParallel)
 set(KIT_TEST_SRCS
   msvVTKFileSeriesReaderTest1.cxx
   msvVTKPolyDataFileSeriesReaderTest1.cxx
+  msvVTKXMLMultiblockLODReaderTest1.cxx
+#  msvVTKCompositeFileSeriesReaderTest1.cxx
   )
 
 create_test_sourcelist(Tests ${KIT}CxxTests.cxx
@@ -26,3 +28,5 @@ endmacro()
 #
 SIMPLE_TEST( msvVTKFileSeriesReaderTest1 )
 SIMPLE_TEST( msvVTKPolyDataFileSeriesReaderTest1 )
+SIMPLE_TEST( msvVTKXMLMultiblockLODReaderTest1 )
+#SIMPLE_TEST( msvVTKCompositeFileSeriesReaderTest1 )
