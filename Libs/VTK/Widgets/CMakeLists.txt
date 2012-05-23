@@ -49,6 +49,9 @@ endif()
 # --------------------------------------------------------------------------
 set(msvVTKWidgets_SRCS
   msvVTKProp3DButtonRepresentation.cxx
+  msvVTKProp3DButtonRepresentation.h
+  msvVTKLODWidget.cxx
+  msvVTKLODWidget.h
   )
 
 # Abstract/pure virtual classes
