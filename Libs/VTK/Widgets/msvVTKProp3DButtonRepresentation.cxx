@@ -258,6 +258,12 @@ void msvVTKProp3DButtonRepresentation::PlaceWidget(double bds[6])
 int msvVTKProp3DButtonRepresentation
 ::ComputeInteractionState(int X, int Y, int vtkNotUsed(modify))
 {
+  this->InteractionState = vtkButtonRepresentation::Outside;
+  if (!this->Renderer ||
+      !this->Renderer->GetVTKWindow()->GetMapped())
+    {
+    return this->InteractionState;
+    }
   this->VisibilityOn(); //actor must be on to be picked
   this->Picker->Pick(X,Y,0.0,this->Renderer);
   vtkAssemblyPath *path = this->Picker->GetPath();
@@ -265,10 +271,6 @@ int msvVTKProp3DButtonRepresentation
   if ( path != NULL )
     {
     this->InteractionState = vtkButtonRepresentation::Inside;
-    }
-  else
-    {
-    this->InteractionState = vtkButtonRepresentation::Outside;
     }
 
   return this->InteractionState;

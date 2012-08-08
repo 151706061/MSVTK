@@ -26,6 +26,13 @@
 #include "vtkAbstractWidget.h"
 #include "msvVTKWidgetsExport.h"
 
+class vtkCompositeActor;
+class vtkCompositeDataSet;
+class vtkCompositePolyDataMapper2;
+class vtkIdTypeArray;
+class vtkSelection;
+class vtkSelectionNode;
+
 class MSV_VTK_WIDGETS_EXPORT msvVTKLODWidget : public vtkAbstractWidget
 {
 public:
@@ -41,6 +48,28 @@ public:
   // Description:
   // Create the default widget representation if one is not set.
   virtual void CreateDefaultRepresentation();
+
+  // Description:
+  // Pick the view and return the composit data set picked if any.
+  vtkCompositeDataSet* PickCompositeDataSet(unsigned int pickX, unsigned int pickY);
+
+  // Description:
+  // Pick the view and return a list of picked composite indexes.
+  // You are responsible for deleting the array
+  vtkIdTypeArray* PickCompositeIndexes(unsigned int startX, unsigned int startY,
+                                       unsigned int endX, unsigned int endY);
+  // Description:
+  // Utility function that picks 1 pixel of the current view
+  // and return the composite index of the picked piece or -1
+  // if nothing is picked.
+  vtkIdType PickCompositeIndex(unsigned int pickX, unsigned int pickY);
+
+  // Description:
+  // Controls wether the widget observes mouse hover events and color
+  // the composite piece under the cursor. Reduces performances.
+  // True by default
+  vtkSetMacro(Interactive, bool);
+  vtkGetMacro(Interactive, bool);
 
 protected:
   msvVTKLODWidget();
@@ -66,6 +95,18 @@ protected:
   // helper methods for cursoe management
   virtual void SetCursor(int State);
 
+  // Return the associated mapper of the selection node prop
+  static vtkCompositeActor* GetActor(vtkSelectionNode* node);
+  static vtkCompositePolyDataMapper2* GetMapper(vtkSelectionNode* node);
+
+  void HighlightCompositePiece(vtkCompositeActor* actor,
+                               vtkIdType compositeIndex);
+  static void SetCompositePieceColor(vtkCompositeActor* actor,
+                                     vtkIdType compositeIndex,
+                                     double color[4]);
+  static void GetCompositePieceColor(vtkCompositeActor* actor,
+                                     vtkIdType compositeIndex,
+                                     double color[4]);
 //BTX
   //widget state
   int WidgetState;
@@ -73,6 +114,12 @@ protected:
 //ETX
   int SelectX;
   int SelectY;
+  bool BlockInteractorStyle;
+  bool Interactive;
+  vtkSelection* LastSelection;
+  double HighlightColor[4];
+  vtkIdType LastHighlightedCompositeIndex;
+  double ColorBeforeHighlight[4];
 
 private:
   msvVTKLODWidget(const msvVTKLODWidget&);  //Not implemented
